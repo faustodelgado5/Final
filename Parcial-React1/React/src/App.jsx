@@ -6,13 +6,13 @@ import Cargador from "./components/Cargador";
 import ListaPaises from "./components/Paises";
 
 const App = () => {
-  const [busqueda, setBusqueda] = useState(""); // Valor del input de búsqueda
-  const [paises, setPaises] = useState([]); // Resultado de los países encontrados
-  const [error, setError] = useState(""); // Mensaje de error
-  const [historial, setHistorial] = useState([]); // Historial de países buscados
-  const [loading, setLoading] = useState(false); // Indicador de carga
+  const [busqueda, setBusqueda] = useState(""); 
+  const [paises, setPaises] = useState([]); 
+  const [error, setError] = useState(""); 
+  const [historial, setHistorial] = useState([]); 
+  const [loading, setLoading] = useState(false); 
 
-  // Función que maneja la búsqueda cuando el botón es presionado
+  
   const buscarPais = async () => {
     if (busqueda.trim() === "") {
       setError("Por favor ingresa un nombre de país.");
@@ -21,35 +21,35 @@ const App = () => {
     }
 
     setLoading(true);
-    setError(""); // Limpiar cualquier error previo
+    setError(""); 
 
     try {
       const response = await fetch(
         `https://restcountries.com/v3.1/name/${busqueda}`
       );
 
-      // Si la respuesta no es exitosa, lanzar un error
+      
       if (!response.ok) {
         throw new Error("No se encontraron países con ese nombre.");
       }
 
       const data = await response.json();
 
-      setPaises(data); // Establecer los países en el estado
+      setPaises(data); 
 
-      // Actualizamos el historial solo si el país no está ya en el historial
+      
       if (!historial.includes(busqueda)) {
         setHistorial((prevHistorial) => {
           const nuevoHistorial = [busqueda, ...prevHistorial];
-          if (nuevoHistorial.length > 5) nuevoHistorial.pop(); // Limitar a 5 países en el historial
+          if (nuevoHistorial.length > 5) nuevoHistorial.pop(); 
           return nuevoHistorial;
         });
       }
     } catch (err) {
-      setError(err.message); // Establecer el mensaje de error
-      setPaises([]); // Vaciar la lista de países si hay un error
+      setError(err.message); 
+      setPaises([]); 
     } finally {
-      setLoading(false); // Finalizar el estado de carga
+      setLoading(false); 
     }
   };
 
